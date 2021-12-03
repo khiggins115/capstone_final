@@ -24,8 +24,6 @@ This project then, aims to create models that explore the strength of relationsh
 By combining IMHE's self-harm mortality data with IMHE's alcohol use prevalence, univariate and multivariate regression modeling was performed, as well as kmeans clustering. 
 
 
-
-
 ### Contents
 - code_appendix
     - 00_DataCollection_Cleaning
@@ -84,12 +82,31 @@ Include the same columns as above, but instead of alcohol_any, contain:
 |alcohol_binge|float64|Prevalence of Binge Alcohol Use|
 |alcohol_prop_binge|float64|Proportion of all Drinkers who are Binge Drinkers|
 
+#### unemployment
+(used only in KMeans)
+Joined with selfharm and alcohol use/abuse data frames, the unemployment data columns match what is in those (FIPS, State, mx, alcohol_heavy, alcohol_prop_heavy, alcohol_binge, alcohol_prop_binge, etc) but add the below variables
+
+|Feature|Type|Description|
+|---|---|---|
+|labor_force|int64|Available Labor Force|
+|employed|int64|Employed Population|
+|unemployed|int64|Total Unemployed population|
+|unemployment_rate|float64|County unemployment rate|
+
+
 
 ### Conclusion
 
-Multivariate Regression Models drastically outperformed Univariate Regression Models, confirming that the inclusion of state and sex strengthens the relationship. RandomForest and GradientBoost Regressors performed the best, but didn't respond well to hypertuning. All had RMSE that was very low, so we can have high confidence that these variables have established relationships, though we cannot say for certain anything about causality. 
+Multivariate Regression Models drastically outperformed Univariate Regression Models, confirming that the inclusion of state and sex strengthens the relationship. RandomForest and GradientBoost Regressors performed the best, but didn't respond well to hypertuning. All had RMSE that was very low, so we can have high confidence that these variables have established relationships, though we cannot say for certain anything about causality (which was not the purpose of this exercise anyways). 
 
 KMeans Clustering was an interesting exercise - 4 clusters yielded the highest silhouette scores, while including labor_force drove up SIL score to over 0.8. Including `unemployment_rate` but not `labor_force` did not yield similarly impressive results.
+
+I think this exercise holds promise for identifying areas that have similarly and disproportionately burdened by alcohol abuse and mortality by self-harm. Potential applications include regionally targeted interventions that could aim to address multiple public health problems at once for certain geographies. 
+
+### Next Steps
+In future iterations on this theme, I would ideally find more recent data that is more complete across all sources. Based on trends observed in selfharm mortality and heavy/binge drinking prevalence on the choropleth maps of US counties, there seemed to it intuitively seemed that disproportionally affected areas are those that have little sunlight and/or harsh winters. Future models might explore the strength of the relationship between total yearly hours of sunlight and selfharm mortality. 
+
+Additionally, I'd like to create an interactive application that allows users to select which variables to cluster and visualize the results. Because of the sheet size of the dataset, for this app to function at acceptable speeds some utilization of databases or AWS would be appropriate. 
 
 
 ### Sources
